@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-ayq9x*$%6_u0a7j=*(b6#3+huayyy6s@m2s9o@yvv_4l@mz3-2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+    'imguesserpy.herokuapp.com',
+    '127.0.0.1'
+]
 
 
 # Application definition
