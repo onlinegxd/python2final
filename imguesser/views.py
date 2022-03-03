@@ -9,7 +9,6 @@ from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 
 
-
 def imguess(imagePath):
     model = load_model('models/my_model.h5')
     image = load_img(imagePath, target_size=(32, 32))
@@ -21,16 +20,22 @@ def imguess(imagePath):
     return guesses[result[0]]
 
 
+def imghistory():
+    imageInfo_list = imageInfo.objects.all()
+    return imageInfo_list
+
+
 
 def index(request):
+    imageHistory = imghistory();
     if request.method == 'POST':
         imageObject = request.FILES['imagePath']
         fss = FileSystemStorage()
         imagePathName = fss.save(imageObject.name, imageObject)
         imagePath = settings.MEDIA_ROOT.replace('\\', '/') + '/' + imagePathName
         res = imguess(imagePath);
-        context = {'imagePathName' : fss.url(imagePathName), 'res' : res}
+        context = {'imagePathName': fss.url(imagePathName), 'res': res, 'imageHistory': imageHistory}
         imageInfo.save(imageInfo.objects.create(imagePath=imagePath, res=res))
         return render(request, 'index.html', context)
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'imageHistory': imageHistory})
 
